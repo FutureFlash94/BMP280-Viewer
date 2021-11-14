@@ -1,23 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-//using Windows.Devices.SerialCommunication;
-//using Windows.Devices.Enumeration;
-//using Windows.Storage.Streams;
 using System.IO.Ports;
 using System.Threading;
+using System.Globalization;
 
 namespace BMP280_Viewer
 {
@@ -26,23 +11,12 @@ namespace BMP280_Viewer
     /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer dispatcherTimer;
         static bool _continue;
         static SerialPort _serialPort;
+        Thread readThread;
         public MainWindow()
         {
             InitializeComponent();
-
-            //  DispatcherTimer setup
-            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Start();
-
-            string name;
-            string message;
-            StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
-            Thread readThread = new Thread(Read);
 
             // Create a new SerialPort object with default settings.
             _serialPort = new SerialPort();
@@ -54,85 +28,71 @@ namespace BMP280_Viewer
             _serialPort.StopBits = StopBits.One;
             _serialPort.Handshake = Handshake.None;
 
-            // Set the read/write timeouts
-            _serialPort.ReadTimeout = 500;
-            _serialPort.WriteTimeout = 500;
+            RefreshComDevices();
+        }
 
-            _serialPort.Open();
-            _continue = true;
-            readThread.Start();
+        private void AddValuesToChart(double pressure, double temperature)
+        {
+            LiveCharts.SeriesCollection series = bm280Chart.Series;
+            series[0].Values.Add(pressure);
+            series[1].Values.Add(temperature);
+        }
+        
+        private void RefreshComDevices()
+        {
+            // get a list of serial port names.
+            string[] ports = SerialPort.GetPortNames();
 
-            Console.Write("Name: ");
-            name = Console.ReadLine();
+            // refresh cbUARTDeviceList
+            cbUARTDeviceList.Items.Clear();
 
-            Console.WriteLine("Type QUIT to exit");
-
-            while (_continue)
+            if (ports.Length > 0)
             {
-                message = Console.ReadLine();
-
-                if (stringComparer.Equals("quit", message))
+                // Display each port name to the console.
+                foreach (string port in ports)
                 {
-                    _continue = false;
+                    cbUARTDeviceList.Items.Add(port);
                 }
-                else
-                {
-                    _serialPort.WriteLine(
-                        String.Format("<{0}>: {1}", name, message));
-                }
+                cbUARTDeviceList.SelectedItem = ports[0];
             }
 
-            readThread.Join();
-            _serialPort.Close();
-        }
-        public double GetRandomNumber(double minimum, double maximum)
-        {
-            Random random = new Random();
-            return random.NextDouble() * (maximum - minimum) + minimum;
-        }
-
-        //  System.Windows.Threading.DispatcherTimer.Tick handler
-        //
-        //  Updates the current seconds display and calls
-        //  InvalidateRequerySuggested on the CommandManager to force 
-        //  the Command to raise the CanExecuteChanged event.
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            // Updating chart
-            // Add Temp
-            bm280Chart.Series[0].Values.Add(GetRandomNumber(10, 15));
-            // Add Press
-            bm280Chart.Series[1].Values.Add(GetRandomNumber(11, 16));
-
-            // Forcing the CommandManager to raise the RequerySuggested event
-            CommandManager.InvalidateRequerySuggested();
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Check for UART devices
-            // TODO: refresh cbUARTDeviceList
+            RefreshComDevices();
         }
 
-        private void cbUARTDeviceList_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            // UART device selected/unselected
-            // TODO: save selected device name
-        }
         private void btnConnect_Click(object sender, RoutedEventArgs e)
         {
-            // Used to connect / disconnect to a UART port
-            if (btnConnect.Name == "Connect")
+            string selectedPort = (string)cbUARTDeviceList.SelectedItem;
+            if (selectedPort == null)
             {
-                btnConnect.Name = "Disconnect";
-                _serialPort.PortName = "COM1";
+                MessageBox.Show("No Port selected!");
+                return;
+            }
+            
+            if (btnConnect.Content.Equals("Connect"))
+            {
+                btnConnect.Content = "Disconnect";
+                btnRefresh.IsEnabled = false;
+                cbUARTDeviceList.IsEnabled = false;
+
+                readThread = new Thread(Read);
+                _serialPort.PortName = selectedPort;
+                _serialPort.Open();
+                _continue = true;
+                readThread.Start();
             } else
             {
-                btnConnect.Name = "Connect";
+                _continue = false;
+                _serialPort.Close();
+                btnConnect.Content = "Connect";
+                btnRefresh.IsEnabled = true;
+                cbUARTDeviceList.IsEnabled = true;
             }
-            // TODO: after conecting, start communication
         }
-        public static void Read()
+        private void Read()
         {
             while (_continue)
             {
@@ -140,9 +100,41 @@ namespace BMP280_Viewer
                 {
                     string message = _serialPort.ReadLine();
                     Console.WriteLine(message);
+
+                    // get pressure and temperature from uart message and add it to the chart
+                    if (message.Contains("P:") && message.Contains("T:"))
+                    {
+                        var startIndexP = message.IndexOf("P:", 0) + 2;
+                        var startIndexSeparator = message.IndexOf("-", 0);
+                        var startIndexT = message.IndexOf("T:", 0) + 2;
+
+                        var stringP = message.Substring(startIndexP, startIndexSeparator - startIndexP);
+                        var stringT = message.Substring(startIndexT, message.Length - startIndexT);
+
+                        stringT = stringT.Replace(" ", "0");
+
+                        Console.WriteLine("P: " + stringP);
+                        Console.WriteLine("T: " + stringT);
+
+                        try
+                        {
+                            AddValuesToChart(double.Parse(stringP, CultureInfo.InvariantCulture), double.Parse(stringT, CultureInfo.InvariantCulture));
+                        }
+                        catch(FormatException ex)
+                        {
+                            Console.WriteLine("FormatException in Read thread: " + ex.Message);
+                        }
+                    }
                 }
-                catch (TimeoutException) { }
+                catch (Exception) { }
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _continue = false;
+            _serialPort.Close();
+            readThread.Abort();
         }
     }
 }

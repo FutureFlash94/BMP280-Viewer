@@ -6,10 +6,9 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:BMP280_Viewer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing">
     <Grid>
         <Label Content="BMP280 Plotter" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnConnect" Content="Connect" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="btnConnect_Click"/>
         <Grid Margin="0,35,0,0">
             <Grid.Resources>
                 <Style x:Key="CleanSeparator" TargetType="lvc:Separator">
@@ -29,22 +28,21 @@
                     <lvc:Axis Title="Time"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="IndianRed" Title="Temperature"/>
-                    <lvc:Axis Foreground="DodgerBlue" Title="Pressure" Position="RightTop">
+                    <lvc:Axis Foreground="Green" Title="Pressure [Pa]"/>
+                    <lvc:Axis Foreground="DarkMagenta" Title="Temperature [DegC]" Position="RightTop">
                         <lvc:Axis.Separator>
                             <lvc:Separator Style="{StaticResource CleanSeparator}"></lvc:Separator>
                         </lvc:Axis.Separator>
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisY>
                 <lvc:CartesianChart.Series>
-                    <lvc:LineSeries Values="0,1" ScalesYAt="0"/>
-                    <!--Scales at red axis, Axis[0]-->
-                    <lvc:LineSeries Values="0,1"  ScalesYAt="1"/>
-                    <!--Scales at blue axis, Axis[1]-->
+                    <lvc:LineSeries Values="" ScalesYAt="0" Stroke="Green" />
+                    <lvc:LineSeries Values="" ScalesYAt="1" Stroke="DarkMagenta" />
                 </lvc:CartesianChart.Series>
             </lvc:CartesianChart>
         </Grid>
-        <ComboBox x:Name="cbUARTDeviceList" HorizontalAlignment="Left" Margin="280,10,0,0" VerticalAlignment="Top" Width="67" DataContextChanged="cbUARTDeviceList_DataContextChanged"/>
+        <ComboBox x:Name="cbUARTDeviceList" HorizontalAlignment="Right" Margin="0,8,170,0" VerticalAlignment="Top" Width="97"/>
         <Button x:Name="btnRefresh" Content="Refresh" Margin="0,10,90,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="btnRefresh_Click"/>
+        <Button x:Name="btnConnect" Content="Connect" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="btnConnect_Click"/>
     </Grid>
 </Window>

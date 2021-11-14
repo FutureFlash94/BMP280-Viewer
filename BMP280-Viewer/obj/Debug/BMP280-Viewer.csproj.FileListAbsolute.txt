@@ -22,3 +22,27 @@
 \\mac\home\documents\visual studio 2017\Projects\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.csprojAssemblyReference.cache
 \\mac\home\documents\visual studio 2017\Projects\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.csproj.CoreCompileInputs.cache
 \\mac\home\documents\visual studio 2017\Projects\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.csproj.CopyComplete
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.csprojAssemblyReference.cache
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\MainWindow.g.cs
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\App.g.cs
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer_MarkupCompile.cache
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer_MarkupCompile.lref
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.exe
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.pdb
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\BMP280-Viewer.exe.config
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\BMP280-Viewer.exe
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\BMP280-Viewer.pdb
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\LiveCharts.dll
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\LiveCharts.Wpf.dll
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\System.IO.Ports.dll
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\LiveCharts.pdb
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\LiveCharts.xml
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\LiveCharts.Wpf.pdb
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\LiveCharts.Wpf.xml
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\bin\Debug\System.IO.Ports.xml
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\MainWindow.baml
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.g.resources
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280_Viewer.Properties.Resources.resources
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.csproj.GenerateResource.cache
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.csproj.CoreCompileInputs.cache
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Debug\BMP280-Viewer.csproj.CopyComplete
