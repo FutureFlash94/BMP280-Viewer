@@ -12,15 +12,12 @@ namespace BMP280_Viewer
     public partial class MainWindow : Window
     {
         static bool _continue;
-        static SerialPort _serialPort;
+        static SerialPort _serialPort = new SerialPort();
         Thread readThread;
         public MainWindow()
         {
             InitializeComponent();
-
-            // Create a new SerialPort object with default settings.
-            _serialPort = new SerialPort();
-
+            
             // Allow the user to set the appropriate properties.
             _serialPort.BaudRate = 11520;
             _serialPort.Parity = Parity.None;
@@ -74,15 +71,23 @@ namespace BMP280_Viewer
             
             if (btnConnect.Content.Equals("Connect"))
             {
-                btnConnect.Content = "Disconnect";
-                btnRefresh.IsEnabled = false;
-                cbUARTDeviceList.IsEnabled = false;
-
-                readThread = new Thread(Read);
                 _serialPort.PortName = selectedPort;
-                _serialPort.Open();
-                _continue = true;
-                readThread.Start();
+                try
+                {
+                    _serialPort.Open();
+
+                    btnConnect.Content = "Disconnect";
+                    btnRefresh.IsEnabled = false;
+                    cbUARTDeviceList.IsEnabled = false;
+
+                    _continue = true;
+                    readThread = new Thread(Read);
+                    readThread.Start();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show("Cannot connect to " + selectedPort + "! UnauthorizedAccessException occured");
+                }
             } else
             {
                 _continue = false;

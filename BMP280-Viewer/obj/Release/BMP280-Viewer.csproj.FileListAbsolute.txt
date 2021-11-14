@@ -21,3 +21,4 @@ D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Release\BMP280-Viewer.cs
 D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Release\BMP280-Viewer.csproj.CopyComplete
 D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Release\BMP280-Viewer.exe
 D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Release\BMP280-Viewer.pdb
+D:\Projekte\C# Projekte\BMP280-Viewer\BMP280-Viewer\obj\Release\BMP280-Viewer.csprojAssemblyReference.cache
